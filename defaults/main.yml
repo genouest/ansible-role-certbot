@@ -31,7 +31,7 @@ certbot_certs: []
 #     - example3.com
 
 certbot_create_command: >-
-  {{ certbot_script }} certonly --{{ certbot_create_method  }}
+  {{ certbot_script }} certonly --{{ certbot_create_method  }} {{ certbot_create_extra_args }}
   {{ '--hsts' if certbot_hsts else '' }}
   {{ '--test-cert' if certbot_testmode else '' }}
   --noninteractive --agree-tos
@@ -39,15 +39,14 @@ certbot_create_command: >-
   {{ '--expand' if certbot_expand else '' }}
   {{ '--webroot-path ' if certbot_create_method == 'webroot'  else '' }}
   {{ cert_item.webroot | default(certbot_webroot) if certbot_create_method == 'webroot' else '' }}
-  {{ certbot_create_extra_args }}
   --cert-name {{ cert_item_name }}
   -d {{ cert_item.domains | join(',') }}
   {{ '--expand' if certbot_expand else '' }}
   {{ '--pre-hook /etc/letsencrypt/renewal-hooks/pre/stop_services'
-    if certbot_create_standalone_stop_services and certbot_create_method == 'standalone'
+    if certbot_create_standalone_stop_services and certbot_create_method in ['standalone', 'authenticator']
   else '' }}
   {{ '--post-hook /etc/letsencrypt/renewal-hooks/post/start_services'
-    if certbot_create_standalone_stop_services and certbot_create_method == 'standalone'
+    if certbot_create_standalone_stop_services and certbot_create_method in ['standalone', 'authenticator']
   else '' }}
   {{ "--deploy-hook '" ~ cert_item.deploy_hook ~ "'"
     if 'deploy_hook' in cert_item
