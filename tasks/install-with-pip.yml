@@ -1,0 +1,6 @@
+---
+
+- name: Install certbot-plugin-gandi with 'pip'
+  ansible.builtin.pip:
+    name: "{{ certbot_pip_version }}"
+    virtualenv: /srv/venv

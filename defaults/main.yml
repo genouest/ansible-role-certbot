@@ -67,3 +67,6 @@ certbot_keep_updated: true
 
 # Where to put Certbot when installing from source.
 certbot_dir: /opt/certbot
+
+# Certbot with pip
+certbot_pip_version: 'certbot'
