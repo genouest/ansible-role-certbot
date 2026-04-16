@@ -4,3 +4,4 @@
   ansible.builtin.pip:
     name: "{{ certbot_pip_version }}"
     virtualenv: /srv/venv
+    virtualenv_command: "{{ ansible_python_interpreter }} -m venv"
